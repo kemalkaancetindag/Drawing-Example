@@ -1,12 +1,24 @@
 import 'package:drawing_tutorial/drawing_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class ExplanationPage extends StatefulWidget{
+  @override
+  _ExplanationPageState createState() => _ExplanationPageState();
+
+}
+
+class _ExplanationPageState extends State<ExplanationPage> {
+  _ExplanationPageState({Key? key});
 
 
-class ExplanationPage extends StatelessWidget {
-  const ExplanationPage({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return Scaffold(
       body: Container(
         height: double.maxFinite,
@@ -20,13 +32,13 @@ class ExplanationPage extends StatelessWidget {
                 right: 0,
                 bottom: 0,
                 child: RotatedBox(
-                  quarterTurns: 1,
+                  quarterTurns: 0,
                   child: Container(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                             image: AssetImage("images/ex_gif.gif")
                         )
                     ),
@@ -35,20 +47,20 @@ class ExplanationPage extends StatelessWidget {
             ),
             Positioned(
               right: 5,
-                bottom: 5,
-                child: GestureDetector(
-                  onTap: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DrawingPage()),
-                    );
-                    showDialog<void>(
-                      context: context,
-                      barrierDismissible: false, // user must tap button!
-                      builder: (BuildContext context) {
-                        return  RotatedBox(
-                          quarterTurns: 1,
-                          child: AlertDialog(
+                top: 5,
+                child:RotatedBox(
+                  quarterTurns: 0,
+                  child:  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DrawingPage()),
+                      );
+                      showDialog<void>(
+                        context: context,
+                        barrierDismissible: false, // user must tap button!
+                        builder: (BuildContext context) {
+                          return AlertDialog(
                             backgroundColor: Colors.white,
                             title: const Text('Şimdi Sıra Sende'),
                             content: SingleChildScrollView(
@@ -71,14 +83,11 @@ class ExplanationPage extends StatelessWidget {
                                 },
                               ),
                             ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: RotatedBox(
-                    quarterTurns: 1,
-                    child: Container(
+                          );
+                        },
+                      );
+                    },
+                    child:Container(
                         width: MediaQuery.of(context).size.width/2.61,
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(

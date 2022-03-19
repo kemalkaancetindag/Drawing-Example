@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'main_page.dart';
 
@@ -8,7 +9,17 @@ class DrawingPage extends StatefulWidget {
 }
 
 class _DrawingPageState extends State<DrawingPage>{
+
+
+
   _DrawingPageState({Key? key});
+
+
+
+
+
+
+
   var _startTuple = <double>[];
   var _endTuple = <double>[];
   var _isTutorial = true;
@@ -37,6 +48,10 @@ class _DrawingPageState extends State<DrawingPage>{
       _endTuple.add(x);
       _endTuple.add(y);
     });
+    print("yeni");
+    print(_startTuple);
+    print(_endTuple);
+
   }
 
   void _setDrawedLines(){
@@ -73,7 +88,7 @@ class _DrawingPageState extends State<DrawingPage>{
                barrierDismissible: false, // user must tap button!
                builder: (BuildContext context) {
                  return  RotatedBox(
-                   quarterTurns: 1,
+                   quarterTurns: 0,
                    child: AlertDialog(
                      backgroundColor: Colors.white,
                      title: const Text('Tebrikler!'),
@@ -115,7 +130,7 @@ class _DrawingPageState extends State<DrawingPage>{
                barrierDismissible: false, // user must tap button!
                builder: (BuildContext context) {
                  return  RotatedBox(
-                   quarterTurns: 1,
+                   quarterTurns: 0,
                    child: AlertDialog(
                      backgroundColor: Colors.white,
                      title: const Text('Tebrikler!'),
@@ -141,6 +156,12 @@ class _DrawingPageState extends State<DrawingPage>{
                              _drawedLines = [];
                              _confirmedLines = [];
                            });
+                           SystemChrome.setPreferredOrientations([
+                             DeviceOrientation.landscapeRight,
+                             DeviceOrientation.landscapeLeft,
+                             DeviceOrientation.portraitUp,
+                             DeviceOrientation.portraitDown,
+                           ]);
                            Navigator.push(
                              context,
                              MaterialPageRoute(builder: (context) => MainPage()),
@@ -169,32 +190,36 @@ class _DrawingPageState extends State<DrawingPage>{
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
 
 
     setState(() {
       _tutorialPointOffsets = [
-        Offset(MediaQuery.of(context).size.height * 0.488,MediaQuery.of(context).size.width * 0.288),
-        Offset(MediaQuery.of(context).size.height *0.088,MediaQuery.of(context).size.width *0.649),
-        Offset(MediaQuery.of(context).size.height *0.488,MediaQuery.of(context).size.width *1.12),
-        Offset(MediaQuery.of(context).size.height * 0.122,MediaQuery.of(context).size.width * 1.45)
+        Offset((MediaQuery.of(context).size.width/1.122)/4.98,(MediaQuery.of(context).size.height/1.23)/9.6 ),
+        Offset((MediaQuery.of(context).size.width/1.122)/2.7,(MediaQuery.of(context).size.height/1.23)/1.20,),
+        Offset((MediaQuery.of(context).size.width/1.122)/1.72,(MediaQuery.of(context).size.height/1.23)/8.9),
+        Offset((MediaQuery.of(context).size.width/1.122)/1.36,(MediaQuery.of(context).size.height/1.23)/1.28)
       ];
       _tutorialPointsMatrix = [
-        [MediaQuery.of(context).size.height * 0.488,MediaQuery.of(context).size.width * 0.288],
-        [MediaQuery.of(context).size.height *0.088,MediaQuery.of(context).size.width *0.649],
-        [MediaQuery.of(context).size.height *0.488,MediaQuery.of(context).size.width *1.12],
-        [MediaQuery.of(context).size.height * 0.122,MediaQuery.of(context).size.width * 1.45]
+        [(MediaQuery.of(context).size.width/1.122)/4.98,(MediaQuery.of(context).size.height/1.23)/9.6],
+        [(MediaQuery.of(context).size.width/1.122)/2.7,(MediaQuery.of(context).size.height/1.23)/1.20],
+        [(MediaQuery.of(context).size.width/1.122)/1.72,(MediaQuery.of(context).size.height/1.23)/8.9],
+        [(MediaQuery.of(context).size.width/1.122)/1.36,(MediaQuery.of(context).size.height/1.23)/1.28]
       ];
     });
     return Scaffold(
-
+      backgroundColor: Color(0xFF171b26),
       body: GestureDetector(
           onPanDown: (details) => _startStroke(
-            details.localPosition.dx,
-            details.localPosition.dy,
+             details.localPosition.dx - ((MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.122))/2),
+            details.localPosition.dy- ((MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height/1.23))/2),
           ),
           onPanUpdate: (details) => _moveStroke(
-            details.localPosition.dx,
-            details.localPosition.dy,
+            details.localPosition.dx - ((MediaQuery.of(context).size.width - (MediaQuery.of(context).size.width/1.122))/2),
+            details.localPosition.dy- ((MediaQuery.of(context).size.height - (MediaQuery.of(context).size.height/1.23))/2),
           ),
           onPanEnd: (details){
             _setDrawedLines();
@@ -202,19 +227,15 @@ class _DrawingPageState extends State<DrawingPage>{
           },
           child:Stack(
             children: [
-              Positioned(
-                  top: 0,
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
+              Center(
                   child: RotatedBox(
-                    quarterTurns: 1,
+                    quarterTurns: 0,
                     child:  Container(
-                      width: double.maxFinite,
-                      height: double.maxFinite,
+                      width: MediaQuery.of(context).size.width/1.122,
+                      height: MediaQuery.of(context).size.height/1.23,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              fit: BoxFit.cover
+                              fit: BoxFit.fill
                               ,
                               image: AssetImage("images/barchart.png")
                           )
@@ -222,18 +243,17 @@ class _DrawingPageState extends State<DrawingPage>{
                     ),
                   )
               ),
-              Positioned(
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  child: CustomPaint(
-                    painter: DrawingPainter(_startTuple,_endTuple,_drawedLines,_isTutorial,_tutorialPointOffsets,_tutorialPointsMatrix,_confirmedLines),
+              Center(
+                child: RotatedBox(
+                  quarterTurns: 0,
+                  child: Container(
+                    width:  MediaQuery.of(context).size.width/1.122,
+                    height:MediaQuery.of(context).size.height/1.23,
+                    child: CustomPaint(
+                      painter: DrawingPainter(_startTuple,_endTuple,_drawedLines,_isTutorial,_tutorialPointOffsets,_tutorialPointsMatrix,_confirmedLines),
+                    ),
                   ),
-                ),
+                )
               ),
 
             ],
@@ -273,6 +293,8 @@ class DrawingPainter extends CustomPainter {
       ..strokeWidth = 2
       ..color = Colors.lightGreen
       ..style = PaintingStyle.fill;
+
+
 
     drawedLines.forEach((line) {
       canvas.drawCircle(Offset(line[0][0],line[0][1]), 3, circlePaint);
